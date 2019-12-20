@@ -10,3 +10,21 @@ canvas {
     display: block;
     margin: 0;
 }
+
+.function-input {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 1.5rem;
+    min-width: 250px;
+    width: 30%;
+    font-size: 1.5rem;
+    border: solid 1px white;
+    border-radius: 5px;
+    padding: 4px 8px;
+    opacity: 50%;
+}
+
+.function-input:hover, .function-input:focus {
+    opacity: 100%;
+}

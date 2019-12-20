@@ -125,12 +125,12 @@ function drawCircle(x, y, radius, colour) {
     ctx.fill();
 }
 
-function plotFunction() {
+function plotFunction(eq) {
     var last_px = NaN;
     var last_py = NaN;
     for (var x = min_x; x <= max_x; x += step) {
         var px = x_to_px(x);
-        var y = Math.cos(x);
+        var y = eval(eq);
         y = -y;
 
         var py = y_to_py(y);
@@ -191,7 +191,8 @@ function animate() {
 
     drawGrid();
 
-    plotFunction();
+    var equation = document.querySelector("input.function-input").value;
+    plotFunction(equation);
 
     ctx.restore();
 
