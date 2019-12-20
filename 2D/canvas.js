@@ -156,8 +156,12 @@ function plotFunction(eq) {
 var min_x = -10.0;
 var max_x = 10.0;
 
-var min_y = -3.0;
-var max_y = 3.0;
+var pixels_per_unit = window.innerWidth / (max_x - min_x);
+
+var y_units = window.innerHeight / pixels_per_unit;
+
+var min_y = -y_units / 2;
+var max_y = y_units / 2;
 
 // incremented every frame, can use to animate
 var timestep = 0;
