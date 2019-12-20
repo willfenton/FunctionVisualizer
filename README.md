@@ -1,2 +1,5 @@
-# 3DFunctionVisualization
-Experimental 3D function visualization
+# Function Visualizer
+Experimental function visualization application
+
+#### Done:
++ 2D Visualizer Prototype
