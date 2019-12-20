@@ -68,8 +68,8 @@ function drawCircle(x, y, radius, colour) {
 }
 
 function plotFunction() {
-    var last_px = 0;
-    var last_py = 0;
+    var last_px = NaN;
+    var last_py = NaN;
     for (var px = 0; px <= canvas.width; px += step) {
         var x = px_to_x(px);
         var y = Math.sin(x + x_shift);
@@ -78,11 +78,13 @@ function plotFunction() {
 
         drawCircle(px, py, point_size, "#00ff00");
 
-        ctx.strokeStyle = "#00ff00";    
-        ctx.beginPath();
-        ctx.moveTo(last_px, last_py);
-        ctx.lineTo(px, py);
-        ctx.stroke();
+        if (last_px != NaN && last_py != NaN) {
+            ctx.strokeStyle = "#00ff00";    
+            ctx.beginPath();
+            ctx.moveTo(last_px, last_py);
+            ctx.lineTo(px, py);
+            ctx.stroke();
+        }
 
         last_px = px;
         last_py = py;
