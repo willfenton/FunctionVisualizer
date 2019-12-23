@@ -78,28 +78,42 @@ function y_to_py(y) {
 class Plot {
     constructor(options, color) {
         this.options = options;
+        this.visible = true;
+        console.log(this.options.visibility)
+        this.options.visibility.addEventListener("click", () => {
+            console.log(this.options.visibility.firstChild.className)
+            if (this.visible) {
+                this.options.visibility.firstChild.className = "fas fa-eye-slash";
+                this.visible = false;
+            } else {
+                this.options.visibility.firstChild.className = "fas fa-eye";
+                this.visible = true;
+            }
+        });
     }
 
     draw() {
-        var last_px = NaN;
-        var last_py = NaN;
-        ctx.strokeStyle = this.options.picker.value;
-        for (var x = min_x; x <= max_x; x += step) {
-            var px = x_to_px(x);
-            var value = this.options.equation.value.replace(/x/gi, `(${x})`);
-            var y = -math.evaluate(value);
+        if (this.visible) {
+            var last_px = NaN;
+            var last_py = NaN;
+            ctx.strokeStyle = this.options.picker.value;
+            for (var x = min_x; x <= max_x; x += step) {
+                var px = x_to_px(x);
+                var value = this.options.equation.value.replace(/x/gi, `(${x})`);
+                var y = -math.evaluate(value);
 
-            var py = y_to_py(y);
+                var py = y_to_py(y);
 
-            if (!isNaN(y) && last_px != NaN && last_py != NaN && Math.abs(py - last_py) <= canvas.height * 2) {
-                ctx.beginPath();
-                ctx.moveTo(last_px, last_py);
-                ctx.lineTo(px, py);
-                ctx.stroke();
+                if (!isNaN(y) && last_px != NaN && last_py != NaN && Math.abs(py - last_py) <= canvas.height * 2) {
+                    ctx.beginPath();
+                    ctx.moveTo(last_px, last_py);
+                    ctx.lineTo(px, py);
+                    ctx.stroke();
+                }
+
+                last_px = px;
+                last_py = py;
             }
-
-            last_px = px;
-            last_py = py;
         }
     }
 }
@@ -273,7 +287,6 @@ function newPlot() {
     document.querySelector("#plot-inputs").appendChild(opt);
 
     // adds a plot to the list
-    console.log(options.picker.value, color)
     plots.push(new Plot(options));
 }
 
