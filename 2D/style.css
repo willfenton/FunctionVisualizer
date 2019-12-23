@@ -48,6 +48,10 @@ canvas {
     box-sizing: border-box;
 }
 
+.invalid {
+    border: solid 2px red;
+}
+
 .function-options button, .function-input, .function-options input[type="color"] {
     position: static;
     margin-right: 10px;

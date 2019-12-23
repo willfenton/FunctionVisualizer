@@ -97,27 +97,33 @@ class Plot {
     }
 
     draw() {
-        if (this.visible) {
-            var last_px = NaN;
-            var last_py = NaN;
-            ctx.strokeStyle = this.options.picker.value;
-            for (var x = min_x; x <= max_x; x += step) {
-                var px = x_to_px(x);
-                var value = this.options.equation.value.replace(/x/gi, `(${x})`);
-                var y = -math.evaluate(value);
+        try {
+            math.evaluate(this.options.equation.value.replace(/x/gi, "(0)"));
+            if (this.visible) {
+                var last_px = NaN;
+                var last_py = NaN;
+                ctx.strokeStyle = this.options.picker.value;
+                for (var x = min_x; x <= max_x; x += step) {
+                    var px = x_to_px(x);
+                    var value = this.options.equation.value.replace(/x/gi, `(${x})`);
+                    var y = -math.evaluate(value);
 
-                var py = y_to_py(y);
+                    var py = y_to_py(y);
 
-                if (!isNaN(y) && last_px != NaN && last_py != NaN && Math.abs(py - last_py) <= canvas.height * 2) {
-                    ctx.beginPath();
-                    ctx.moveTo(last_px, last_py);
-                    ctx.lineTo(px, py);
-                    ctx.stroke();
+                    if (!isNaN(y) && last_px != NaN && last_py != NaN && Math.abs(py - last_py) <= canvas.height * 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(last_px, last_py);
+                        ctx.lineTo(px, py);
+                        ctx.stroke();
+                    }
+
+                    last_px = px;
+                    last_py = py;
                 }
-
-                last_px = px;
-                last_py = py;
             }
+            this.options.equation.className = "function-input ui";
+        } catch {
+            this.options.equation.className = "function-input ui invalid";
         }
     }
 }
