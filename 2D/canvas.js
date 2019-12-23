@@ -159,8 +159,10 @@ function drawCircle(x, y, radius, colour) {
 }
 
 function plotFunctions() {
-    for (const plot of plots) {
-        plot.draw();
+    let inputs = document.querySelectorAll("input.function-input");
+    for (const i in plots) {
+        plots[i].equation = inputs[i].value;
+        plots[i].draw();
     }
 }
 
@@ -192,10 +194,27 @@ var x_shift = 0.0;
 
 var scroll_zoom_multiplier = 0.1;
 
+function randomColor() {
+    let color = '#';
+    for (let i = 0; i < 3; i++) {
+        let val = Math.floor(Math.random() * 256);
+        color += val.toString(16);
+    }
+    return color;
+}
+
 function newPlot() {
     // add DOM input
-    plots.push(new Plot(document.querySelector("input.function-input").value, "#00FF00"));
+    var input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "type function here";
+    input.className = "function-input ui";
+    document.getElementById("plot-inputs").appendChild(input);
+
+    plots.push(new Plot(0, randomColor()));
 }
+
+newPlot();
 
 // ---- canvas callback loop
 function animate() {
