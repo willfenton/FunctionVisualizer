@@ -74,6 +74,39 @@ function y_to_py(y) {
     return canvas.height * ((y - min_y) / (max_y - min_y));
 }
 
+// ---- plot class
+class Plot {
+    constructor(equation, color) {
+        this.equation = equation;
+        this.color = color;
+    }
+
+    draw() {
+        var last_px = NaN;
+        var last_py = NaN;
+        for (var x = min_x; x <= max_x; x += step) {
+            var px = x_to_px(x);
+            var value = this.equation.replace(/x/gi, x);
+            var y = -math.evaluate(value);
+
+            var py = y_to_py(y);
+
+            if (!isNaN(y) && last_px != NaN && last_py != NaN) {
+                    ctx.strokeStyle = this.color;
+                    ctx.beginPath();
+                    ctx.moveTo(last_px, last_py);
+                    ctx.lineTo(px, py);
+                    ctx.stroke();
+            }
+
+            last_px = px;
+            last_py = py;
+        }
+    }
+}
+
+const plots = [];
+
 // ---- app stuff
 function drawGrid() {
     for (var x = Math.round(min_x); x <= max_x; x++) {
@@ -125,30 +158,9 @@ function drawCircle(x, y, radius, colour) {
     ctx.fill();
 }
 
-function plotFunction(eq) {
-    var last_px = NaN;
-    var last_py = NaN;
-    for (var x = min_x; x <= max_x; x += step) {
-        var px = x_to_px(x);
-        var value = eq.replace(/x/gi, x);
-        var y = -math.evaluate(value);
-
-        var py = y_to_py(y);
-
-        if (!isNaN(y)) {
-            if (last_px != NaN && last_py != NaN) {
-                ctx.strokeStyle = "#00ff0088";
-                ctx.beginPath();
-                ctx.moveTo(last_px, last_py);
-                ctx.lineTo(px, py);
-                ctx.stroke();
-            }
-
-            // drawCircle(px, py, point_size, "#00ff00");
-        }
-
-        last_px = px;
-        last_py = py;
+function plotFunctions() {
+    for (const plot of plots) {
+        plot.draw();
     }
 }
 
@@ -180,6 +192,11 @@ var x_shift = 0.0;
 
 var scroll_zoom_multiplier = 0.1;
 
+function newPlot() {
+    // add DOM input
+    plots.push(new Plot(document.querySelector("input.function-input").value, "#00FF00"));
+}
+
 // ---- canvas callback loop
 function animate() {
     canvas.width = window.innerWidth;
@@ -195,8 +212,7 @@ function animate() {
 
     drawGrid();
 
-    var equation = document.querySelector("input.function-input").value;
-    plotFunction(equation);
+    plotFunctions();
 
     ctx.restore();
 
