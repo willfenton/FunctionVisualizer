@@ -131,7 +131,7 @@ function drawGrid() {
 
     // draw thicker line for x=0
     ctx.beginPath();
-    ctx.strokeStyle = "#858585"
+    ctx.strokeStyle = "#999"
     ctx.lineWidth = 2;
     ctx.moveTo(x_to_px(0), 0);
     ctx.lineTo(x_to_px(0), canvas.height);
@@ -139,7 +139,7 @@ function drawGrid() {
 
     // draw thicker line for y=0
     ctx.beginPath();
-    ctx.strokeStyle = "#858585"
+    ctx.strokeStyle = "#999"
     ctx.lineWidth = 2;
     ctx.moveTo(0, y_to_py(0));
     ctx.lineTo(canvas.width, y_to_py(0));
@@ -195,12 +195,10 @@ var x_shift = 0.0;
 var scroll_zoom_multiplier = 0.1;
 
 function randomColor() {
-    // returns a random color value as HEX value
-    let color = '#';
-    for (let i = 0; i < 3; i++) {
-        let val = Math.floor(Math.random() * 256);
-        color += val.toString(16);
-    }
+    // returns a random color value as HSL value
+    let color = "hsl(";
+    color += Math.floor(Math.random() * 256);
+    color += ",100%,50%)";
     return color;
 }
 
