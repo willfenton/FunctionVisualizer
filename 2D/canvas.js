@@ -79,9 +79,7 @@ class Plot {
     constructor(options, color) {
         this.options = options;
         this.visible = true;
-        console.log(this.options.visibility)
         this.options.visibility.addEventListener("click", () => {
-            console.log(this.options.visibility.firstChild.className)
             if (this.visible) {
                 this.options.visibility.firstChild.className = "fas fa-eye-slash";
                 this.visible = false;
@@ -89,6 +87,12 @@ class Plot {
                 this.options.visibility.firstChild.className = "fas fa-eye";
                 this.visible = true;
             }
+        });
+        this.options.remove.addEventListener("click", () => {
+            let index = plots.indexOf(this);
+            let opts = this.options.visibility.parentElement;
+            opts.parentElement.removeChild(opts);
+            plots.splice(index, 1);
         });
     }
 

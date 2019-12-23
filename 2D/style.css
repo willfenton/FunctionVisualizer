@@ -26,6 +26,7 @@ canvas {
 
 .ui {
     background: #111;
+    color: white;
     border: solid 1px white;
     border-radius: 5px;
     padding: 4px 8px;
