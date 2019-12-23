@@ -113,6 +113,9 @@ let jump = 1;
 function drawGrid() {
     var gridColor = "#2e2e2e";
     var axisColor = "#999";
+    ctx.font = "16px Arial";
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#fff";
 
     if ((window.innerWidth / (max_x - min_x)) / pixels_per_unit > 2) {
         pixels_per_unit = window.innerWidth / (max_x - min_x);
@@ -130,9 +133,11 @@ function drawGrid() {
         ctx.moveTo(px, 0);
         ctx.lineTo(px, canvas.height);
         ctx.stroke();
+
+        ctx.fillText(x, px - 2, y_to_py(0) + 20);
     }
 
-    for (var x = 0; x > Math.round(min_x); x -= jump) {
+    for (var x = -jump; x > Math.round(min_x); x -= jump) {
         var px = x_to_px(x);
 
         ctx.beginPath();
@@ -140,9 +145,11 @@ function drawGrid() {
         ctx.moveTo(px, 0);
         ctx.lineTo(px, canvas.height);
         ctx.stroke();
+
+        ctx.fillText(x, px - 2, y_to_py(0) + 20);
     }
 
-    for (var y = 0; y <= max_y; y += jump) {
+    for (var y = jump; y <= max_y; y += jump) {
         var py = y_to_py(y);
 
         ctx.beginPath();
@@ -150,9 +157,11 @@ function drawGrid() {
         ctx.moveTo(0, py);
         ctx.lineTo(canvas.width, py);
         ctx.stroke();
+
+        ctx.fillText(-y, x_to_px(0) - 2, py + 20);
     }
 
-    for (var y = 0; y > Math.round(min_y); y -= jump) {
+    for (var y = -jump; y > Math.round(min_y); y -= jump) {
         var py = y_to_py(y);
 
         ctx.beginPath();
@@ -160,6 +169,8 @@ function drawGrid() {
         ctx.moveTo(0, py);
         ctx.lineTo(canvas.width, py);
         ctx.stroke();
+
+        ctx.fillText(-y, x_to_px(0) - 2, py + 20);
     }
 
     // draw thicker line for x=0
