@@ -130,7 +130,8 @@ function plotFunction(eq) {
     var last_py = NaN;
     for (var x = min_x; x <= max_x; x += step) {
         var px = x_to_px(x);
-        var y = -eval(eq);
+        var value = eq.replace(/x/gi, x);
+        var y = -math.evaluate(value);
 
         var py = y_to_py(y);
 
