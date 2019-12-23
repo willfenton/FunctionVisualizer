@@ -109,11 +109,14 @@ const plots = [];
 
 // ---- app stuff
 function drawGrid() {
+    var gridColor = "#2e2e2e";
+    var axisColor = "#999";
+
     for (var x = Math.round(min_x); x <= max_x; x++) {
         var px = x_to_px(x);
 
         ctx.beginPath();
-        ctx.strokeStyle = "#2e2e2e"
+        ctx.strokeStyle = gridColor;
         ctx.moveTo(px, 0);
         ctx.lineTo(px, canvas.height);
         ctx.stroke();
@@ -123,7 +126,7 @@ function drawGrid() {
         var py = y_to_py(y);
 
         ctx.beginPath();
-        ctx.strokeStyle = "#2e2e2e"
+        ctx.strokeStyle = gridColor;
         ctx.moveTo(0, py);
         ctx.lineTo(canvas.width, py);
         ctx.stroke();
@@ -131,7 +134,7 @@ function drawGrid() {
 
     // draw thicker line for x=0
     ctx.beginPath();
-    ctx.strokeStyle = "#999"
+    ctx.strokeStyle = axisColor;
     ctx.lineWidth = 2;
     ctx.moveTo(x_to_px(0), 0);
     ctx.lineTo(x_to_px(0), canvas.height);
@@ -139,7 +142,7 @@ function drawGrid() {
 
     // draw thicker line for y=0
     ctx.beginPath();
-    ctx.strokeStyle = "#999"
+    ctx.strokeStyle = axisColor;
     ctx.lineWidth = 2;
     ctx.moveTo(0, y_to_py(0));
     ctx.lineTo(canvas.width, y_to_py(0));
