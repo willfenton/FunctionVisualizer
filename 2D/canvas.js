@@ -86,17 +86,17 @@ class Plot {
         var last_py = NaN;
         for (var x = min_x; x <= max_x; x += step) {
             var px = x_to_px(x);
-            var value = this.equation.replace(/x/gi, x);
+            var value = this.equation.replace(/x/gi, `(${x})`);
             var y = -math.evaluate(value);
 
             var py = y_to_py(y);
 
-            if (!isNaN(y) && last_px != NaN && last_py != NaN) {
-                    ctx.strokeStyle = this.color;
-                    ctx.beginPath();
-                    ctx.moveTo(last_px, last_py);
-                    ctx.lineTo(px, py);
-                    ctx.stroke();
+            if (!isNaN(y) && last_px != NaN && last_py != NaN && Math.abs(py - last_py) <= canvas.height * 2) {
+                ctx.strokeStyle = this.color;
+                ctx.beginPath();
+                ctx.moveTo(last_px, last_py);
+                ctx.lineTo(px, py);
+                ctx.stroke();
             }
 
             last_px = px;
@@ -214,7 +214,7 @@ function newPlot() {
     document.getElementById("plot-inputs").appendChild(input);
 
     // adds a plot to the list
-    plots.push(new Plot(0, randomColor()));
+    plots.push(new Plot("", randomColor()));
 }
 
 newPlot();
