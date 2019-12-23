@@ -67,3 +67,7 @@ canvas {
     height: 39px;
     width: 48px;
 }
+
+button {
+    font-size: 1.25rem;
+}
