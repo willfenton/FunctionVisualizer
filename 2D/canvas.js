@@ -19,7 +19,7 @@ if (canvas.getContext) {
 
 // track whether left mouse button is pressed
 var mouse_down = 0;
-document.body.onmousedown = function() { 
+document.body.onmousedown = function() {
   mouse_down = true;
 }
 document.body.onmouseup = function() {
@@ -88,7 +88,7 @@ function drawGrid() {
 
     for (var y = Math.round(min_y); y <= max_y; y++) {
         var py = y_to_py(y);
-        
+
         ctx.beginPath();
         ctx.strokeStyle = "#2e2e2e"
         ctx.moveTo(0, py);
@@ -130,14 +130,13 @@ function plotFunction(eq) {
     var last_py = NaN;
     for (var x = min_x; x <= max_x; x += step) {
         var px = x_to_px(x);
-        var y = eval(eq);
-        y = -y;
+        var y = -eval(eq);
 
         var py = y_to_py(y);
 
         if (!isNaN(y)) {
             if (last_px != NaN && last_py != NaN) {
-                ctx.strokeStyle = "#00ff0088";    
+                ctx.strokeStyle = "#00ff0088";
                 ctx.beginPath();
                 ctx.moveTo(last_px, last_py);
                 ctx.lineTo(px, py);
@@ -187,7 +186,7 @@ function animate() {
 
     // clear the canvas
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    
+
     // call animate in a loop for each frame
     requestAnimationFrame(animate);
 
