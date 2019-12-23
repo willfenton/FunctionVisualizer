@@ -195,6 +195,7 @@ var x_shift = 0.0;
 var scroll_zoom_multiplier = 0.1;
 
 function randomColor() {
+    // returns a random color value as HEX value
     let color = '#';
     for (let i = 0; i < 3; i++) {
         let val = Math.floor(Math.random() * 256);
@@ -211,6 +212,7 @@ function newPlot() {
     input.className = "function-input ui";
     document.getElementById("plot-inputs").appendChild(input);
 
+    // adds a plot to the list
     plots.push(new Plot(0, randomColor()));
 }
 

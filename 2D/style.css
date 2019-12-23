@@ -13,8 +13,8 @@ canvas {
 
 #HUD {
     position: absolute;
-    top: 0;
-    left: 10px;
+    top: 5px;
+    left: 15px;
     min-width: 250px;
     width: 30%;
     opacity: 50%;
