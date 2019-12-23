@@ -76,31 +76,48 @@ function y_to_py(y) {
 
 // ---- plot class
 class Plot {
-    constructor(equation, color) {
-        this.equation = equation;
-        this.color = color;
+    constructor(options, color) {
+        this.options = options;
+        this.visible = true;
+        this.options.visibility.addEventListener("click", () => {
+            if (this.visible) {
+                this.options.visibility.firstChild.className = "fas fa-eye-slash";
+                this.visible = false;
+            } else {
+                this.options.visibility.firstChild.className = "fas fa-eye";
+                this.visible = true;
+            }
+        });
+        this.options.remove.addEventListener("click", () => {
+            let index = plots.indexOf(this);
+            let opts = this.options.visibility.parentElement;
+            opts.parentElement.removeChild(opts);
+            plots.splice(index, 1);
+        });
     }
 
     draw() {
-        var last_px = NaN;
-        var last_py = NaN;
-        for (var x = min_x; x <= max_x; x += step) {
-            var px = x_to_px(x);
-            var value = this.equation.replace(/x/gi, `(${x})`);
-            var y = -math.evaluate(value);
+        if (this.visible) {
+            var last_px = NaN;
+            var last_py = NaN;
+            ctx.strokeStyle = this.options.picker.value;
+            for (var x = min_x; x <= max_x; x += step) {
+                var px = x_to_px(x);
+                var value = this.options.equation.value.replace(/x/gi, `(${x})`);
+                var y = -math.evaluate(value);
 
-            var py = y_to_py(y);
+                var py = y_to_py(y);
 
-            if (!isNaN(y) && last_px != NaN && last_py != NaN && Math.abs(py - last_py) <= canvas.height * 2) {
-                ctx.strokeStyle = this.color;
-                ctx.beginPath();
-                ctx.moveTo(last_px, last_py);
-                ctx.lineTo(px, py);
-                ctx.stroke();
+                if (!isNaN(y) && last_px != NaN && last_py != NaN && Math.abs(py - last_py) <= canvas.height * 2) {
+                    ctx.beginPath();
+                    ctx.moveTo(last_px, last_py);
+                    ctx.lineTo(px, py);
+                    ctx.stroke();
+                }
+
+                last_px = px;
+                last_py = py;
             }
-
-            last_px = px;
-            last_py = py;
         }
     }
 }
@@ -203,9 +220,7 @@ function drawCircle(x, y, radius, colour) {
 }
 
 function plotFunctions() {
-    let inputs = document.querySelectorAll("input.function-input");
     for (const i in plots) {
-        plots[i].equation = inputs[i].value;
         plots[i].draw();
     }
 }
@@ -240,22 +255,54 @@ var scroll_zoom_multiplier = 0.1;
 
 function randomColor() {
     // returns a random color value as HSL value
-    let color = "hsl(";
-    color += Math.floor(Math.random() * 256);
-    color += ",100%,50%)";
+    let vals = ["00", "ff", Math.floor(Math.random() * 256).toString(16)]
+    //shuffle
+    vals.sort(() => 0.5 - Math.random());
+    let color = `#${vals[0]}${vals[1]}${vals[2]}`;
     return color;
 }
 
 function newPlot() {
     // add DOM input
-    var input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "type function here";
-    input.className = "function-input ui";
-    document.getElementById("plot-inputs").appendChild(input);
+    var options = {};
+    var opt = document.createElement("div");
+    var color = randomColor();
+    opt.className = "function-options";
+
+    // equation
+    options.equation = document.createElement("input");
+    options.equation.type = "text";
+    options.equation.placeholder = "type function here";
+    options.equation.className = "function-input ui";
+    opt.appendChild(options.equation);
+
+    // show/hide button
+    options.visibility = document.createElement("button");
+    options.visibility.className = "ui";
+    var icon = document.createElement("i");
+    icon.className = "fas fa-eye";
+    options.visibility.appendChild(icon);
+    opt.appendChild(options.visibility);
+
+    // remove button
+    options.remove = document.createElement("button");
+    options.remove.className = "ui";
+    var icon = document.createElement("i");
+    icon.className = "fas fa-minus";
+    options.remove.appendChild(icon);
+    opt.appendChild(options.remove);
+
+    // color picker
+    options.picker = document.createElement("input");
+    options.picker.type = "color";
+    options.picker.className = "ui";
+    options.picker.value = color;
+    opt.appendChild(options.picker);
+
+    document.querySelector("#plot-inputs").appendChild(opt);
 
     // adds a plot to the list
-    plots.push(new Plot("", randomColor()));
+    plots.push(new Plot(options));
 }
 
 newPlot();

@@ -25,22 +25,41 @@ canvas {
 }
 
 .ui {
-    font-size: 1.5rem;
     background: #111;
+    color: white;
     border: solid 1px white;
     border-radius: 5px;
     padding: 4px 8px;
 }
 
-.function-input {
-    height: 2rem;
-    display: block;
-    box-sizing: border-box;
-    margin: 10px 0;
+.plot-inputs {
     width: 100%;
 }
 
-button {
-    position: absolute;
-    right: 0;
+.function-options {
+    margin: 10px 0;
+    width: 100%;
+    display: flex;
+}
+
+.function-input {
+    font-size: 1.5rem;
+    display: inline;
+    box-sizing: border-box;
+}
+
+.function-options button, .function-input, .function-options input[type="color"] {
+    position: static;
+    margin-right: 10px;
+}
+
+.function-options button {
+    font-size: 1.5rem;
+    display: inline;
+}
+
+.function-options input[type="color"] {
+    flex-shrink: 0;
+    height: 39px;
+    width: 48px;
 }
