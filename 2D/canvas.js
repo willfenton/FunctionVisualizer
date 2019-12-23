@@ -108,11 +108,21 @@ class Plot {
 const plots = [];
 
 // ---- app stuff
+let jump = 1;
+
 function drawGrid() {
     var gridColor = "#2e2e2e";
     var axisColor = "#999";
 
-    for (var x = Math.round(min_x); x <= max_x; x++) {
+    if ((window.innerWidth / (max_x - min_x)) / pixels_per_unit > 2) {
+        pixels_per_unit = window.innerWidth / (max_x - min_x);
+        jump /= 2;
+    } else if ((window.innerWidth / (max_x - min_x)) / pixels_per_unit < .5) {
+        pixels_per_unit = window.innerWidth / (max_x - min_x);
+        jump *= 2;
+    }
+
+    for (var x = 0; x <= max_x; x += jump) {
         var px = x_to_px(x);
 
         ctx.beginPath();
@@ -122,7 +132,27 @@ function drawGrid() {
         ctx.stroke();
     }
 
-    for (var y = Math.round(min_y); y <= max_y; y++) {
+    for (var x = 0; x > Math.round(min_x); x -= jump) {
+        var px = x_to_px(x);
+
+        ctx.beginPath();
+        ctx.strokeStyle = gridColor;
+        ctx.moveTo(px, 0);
+        ctx.lineTo(px, canvas.height);
+        ctx.stroke();
+    }
+
+    for (var y = 0; y <= max_y; y += jump) {
+        var py = y_to_py(y);
+
+        ctx.beginPath();
+        ctx.strokeStyle = gridColor;
+        ctx.moveTo(0, py);
+        ctx.lineTo(canvas.width, py);
+        ctx.stroke();
+    }
+
+    for (var y = 0; y > Math.round(min_y); y -= jump) {
         var py = y_to_py(y);
 
         ctx.beginPath();
