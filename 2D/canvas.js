@@ -160,7 +160,7 @@ function drawGrid() {
         ctx.fillText(x, px - 2, y_to_py(0) + 20);
     }
 
-    for (var x = -jump; x > Math.round(min_x); x -= jump) {
+    for (var x = -jump; x >= Math.round(min_x); x -= jump) {
         var px = x_to_px(x);
 
         ctx.beginPath();
@@ -184,7 +184,7 @@ function drawGrid() {
         ctx.fillText(-y, x_to_px(0) - 2, py + 20);
     }
 
-    for (var y = -jump; y > Math.round(min_y); y -= jump) {
+    for (var y = -jump; y >= Math.round(min_y); y -= jump) {
         var py = y_to_py(y);
 
         ctx.beginPath();
