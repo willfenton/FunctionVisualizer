@@ -76,8 +76,8 @@ function y_to_py(y) {
 
 // ---- plot class
 class Plot {
-    constructor(equation, color) {
-        this.equation = equation;
+    constructor(input, color) {
+        this.input = input;
         this.color = color;
     }
 
@@ -86,7 +86,7 @@ class Plot {
         var last_py = NaN;
         for (var x = min_x; x <= max_x; x += step) {
             var px = x_to_px(x);
-            var value = this.equation.replace(/x/gi, `(${x})`);
+            var value = this.input.value.replace(/x/gi, `(${x})`);
             var y = -math.evaluate(value);
 
             var py = y_to_py(y);
@@ -244,7 +244,7 @@ function newPlot() {
     document.getElementById("plot-inputs").appendChild(input);
 
     // adds a plot to the list
-    plots.push(new Plot("", randomColor()));
+    plots.push(new Plot(input, randomColor()));
 }
 
 newPlot();
