@@ -11,20 +11,35 @@ canvas {
     margin: 0;
 }
 
-.function-input {
+#HUD {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    height: 1.5rem;
+    top: 5px;
+    left: 15px;
     min-width: 250px;
     width: 30%;
+    opacity: 50%;
+}
+
+#HUD:hover, #HUD:focus-within {
+    opacity: 100%;
+}
+
+.ui {
     font-size: 1.5rem;
     border: solid 1px white;
     border-radius: 5px;
     padding: 4px 8px;
-    opacity: 50%;
 }
 
-.function-input:hover, .function-input:focus {
-    opacity: 100%;
+.function-input {
+    height: 2rem;
+    display: block;
+    box-sizing: border-box;
+    margin: 10px 0;
+    width: 100%;
+}
+
+button {
+    position: absolute;
+    right: 0;
 }

@@ -74,6 +74,39 @@ function y_to_py(y) {
     return canvas.height * ((y - min_y) / (max_y - min_y));
 }
 
+// ---- plot class
+class Plot {
+    constructor(equation, color) {
+        this.equation = equation;
+        this.color = color;
+    }
+
+    draw() {
+        var last_px = NaN;
+        var last_py = NaN;
+        for (var x = min_x; x <= max_x; x += step) {
+            var px = x_to_px(x);
+            var value = this.equation.replace(/x/gi, x);
+            var y = -math.evaluate(value);
+
+            var py = y_to_py(y);
+
+            if (!isNaN(y) && last_px != NaN && last_py != NaN) {
+                    ctx.strokeStyle = this.color;
+                    ctx.beginPath();
+                    ctx.moveTo(last_px, last_py);
+                    ctx.lineTo(px, py);
+                    ctx.stroke();
+            }
+
+            last_px = px;
+            last_py = py;
+        }
+    }
+}
+
+const plots = [];
+
 // ---- app stuff
 function drawGrid() {
     for (var x = Math.round(min_x); x <= max_x; x++) {
@@ -98,7 +131,7 @@ function drawGrid() {
 
     // draw thicker line for x=0
     ctx.beginPath();
-    ctx.strokeStyle = "#858585"
+    ctx.strokeStyle = "#999"
     ctx.lineWidth = 2;
     ctx.moveTo(x_to_px(0), 0);
     ctx.lineTo(x_to_px(0), canvas.height);
@@ -106,7 +139,7 @@ function drawGrid() {
 
     // draw thicker line for y=0
     ctx.beginPath();
-    ctx.strokeStyle = "#858585"
+    ctx.strokeStyle = "#999"
     ctx.lineWidth = 2;
     ctx.moveTo(0, y_to_py(0));
     ctx.lineTo(canvas.width, y_to_py(0));
@@ -125,30 +158,11 @@ function drawCircle(x, y, radius, colour) {
     ctx.fill();
 }
 
-function plotFunction(eq) {
-    var last_px = NaN;
-    var last_py = NaN;
-    for (var x = min_x; x <= max_x; x += step) {
-        var px = x_to_px(x);
-        var value = eq.replace(/x/gi, x);
-        var y = -math.evaluate(value);
-
-        var py = y_to_py(y);
-
-        if (!isNaN(y)) {
-            if (last_px != NaN && last_py != NaN) {
-                ctx.strokeStyle = "#00ff0088";
-                ctx.beginPath();
-                ctx.moveTo(last_px, last_py);
-                ctx.lineTo(px, py);
-                ctx.stroke();
-            }
-
-            // drawCircle(px, py, point_size, "#00ff00");
-        }
-
-        last_px = px;
-        last_py = py;
+function plotFunctions() {
+    let inputs = document.querySelectorAll("input.function-input");
+    for (const i in plots) {
+        plots[i].equation = inputs[i].value;
+        plots[i].draw();
     }
 }
 
@@ -180,6 +194,28 @@ var x_shift = 0.0;
 
 var scroll_zoom_multiplier = 0.1;
 
+function randomColor() {
+    // returns a random color value as HSL value
+    let color = "hsl(";
+    color += Math.floor(Math.random() * 256);
+    color += ",100%,50%)";
+    return color;
+}
+
+function newPlot() {
+    // add DOM input
+    var input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "type function here";
+    input.className = "function-input ui";
+    document.getElementById("plot-inputs").appendChild(input);
+
+    // adds a plot to the list
+    plots.push(new Plot(0, randomColor()));
+}
+
+newPlot();
+
 // ---- canvas callback loop
 function animate() {
     canvas.width = window.innerWidth;
@@ -195,8 +231,7 @@ function animate() {
 
     drawGrid();
 
-    var equation = document.querySelector("input.function-input").value;
-    plotFunction(equation);
+    plotFunctions();
 
     ctx.restore();
 
