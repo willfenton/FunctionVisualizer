@@ -98,14 +98,14 @@ class Plot {
 
     draw() {
         try {
-            math.evaluate(this.options.equation.value.replace(/x/gi, "(0)"));
+            math.evaluate(this.options.equation.value.replace(/x/i, "(0)"));
             if (this.visible) {
                 var last_px = NaN;
                 var last_py = NaN;
                 ctx.strokeStyle = this.options.picker.value;
                 for (var x = min_x; x <= max_x; x += step) {
                     var px = x_to_px(x);
-                    var value = this.options.equation.value.replace(/x/gi, `(${x})`);
+                    var value = this.options.equation.value.replace(/x/i, `(${x})`);
                     var y = -math.evaluate(value);
 
                     var py = y_to_py(y);
@@ -120,6 +120,19 @@ class Plot {
                     last_px = px;
                     last_py = py;
                 }
+            }
+            // mouse hover
+            y = this.options.equation.value.replace(/x/i, `(${px_to_x(mouse_x)})`);
+            y = -math.evaluate(y);
+            py = y_to_py(y);
+            let threshold = 40;
+            if (this.visible && this.options.equation.value != "" && Math.abs(mouse_y - py) < threshold) {
+                drawCircle(mouse_x, py, 3, this.options.picker.value);
+                ctx.textAlign = "left";
+                ctx.fillStyle = "#fff";
+                ctx.strokeStyle = "#000";
+                ctx.strokeText(`${y}`.slice(0, 6), mouse_x, py + 20);
+                ctx.fillText(`${y}`.slice(0, 6), mouse_x, py + 20);
             }
             this.options.equation.className = "function-input ui";
         } catch {
