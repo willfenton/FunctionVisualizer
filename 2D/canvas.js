@@ -98,14 +98,15 @@ class Plot {
 
     draw() {
         try {
-            math.evaluate(this.options.equation.value.replace(/x/i, "(0)"));
+            // if the equation is invalid, it will immediately throw an error
+            math.evaluate(this.options.equation.value.replace(/x/gi, "(0)"))
             if (this.visible) {
                 var last_px = NaN;
                 var last_py = NaN;
                 ctx.strokeStyle = this.options.picker.value;
                 for (var x = min_x; x <= max_x; x += step) {
                     var px = x_to_px(x);
-                    var value = this.options.equation.value.replace(/x/i, `(${x})`);
+                    var value = this.options.equation.value.replace(/x/gi, `(${x})`);
                     var y = -math.evaluate(value);
 
                     var py = y_to_py(y);
@@ -122,7 +123,7 @@ class Plot {
                 }
             }
             // mouse hover
-            y = this.options.equation.value.replace(/x/i, `(${px_to_x(mouse_x)})`);
+            y = this.options.equation.value.replace(/x/gi, `(${px_to_x(mouse_x)})`);
             y = -math.evaluate(y);
             py = y_to_py(y);
             let threshold = 40;
