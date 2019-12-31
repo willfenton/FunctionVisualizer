@@ -7,18 +7,21 @@
 
     <title>2D Function Visualizer</title>
 
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.2.5/math.min.js" defer></script>
-    <script src="canvas.js" defer>Fallback</script>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    <div id="HUD">
-        <div id="plot-inputs"></div>
-        <button class="ui" onclick="newPlot()">
-            <i class="fas fa-plus"></i>
-        </button>
+    <div class="main">
+        <h1>Function Visualizer</h1>
+        <h3>Experimental function visualization application using HTML Canvas and WebGL</h3>
+        <a href="2D/index.html" class="ui">
+            <i class="far fa-square"></i>
+            2D
+        </a>
+        <a href="3D/index.html" class="ui">
+            <i class="fas fa-cube"></i>
+            3D
+        </a>
     </div>
 </body>
 </html>
