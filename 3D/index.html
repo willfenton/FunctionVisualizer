@@ -13,8 +13,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
     <script src="canvas.js" defer>Fallback</script>
+    <script src="../common.js" defer>Fallback</script>
 </head>
-<body>
+<body onkeydown="keyboardPress(event)">
     <div id="HUD">
         <div id="plot-inputs"></div>
         <button class="ui" onclick="newPlot()">
